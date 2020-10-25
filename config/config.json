@@ -1,0 +1,18 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "nk-webpart-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/nkWebpart/NkWebpartWebPart.js",
+          "manifest": "./src/webparts/nkWebpart/NkWebpartWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "NkWebpartWebPartStrings": "lib/webparts/nkWebpart/loc/{locale}.js"
+  }
+}

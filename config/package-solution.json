@@ -1,0 +1,20 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "nk-webpart-client-side-solution",
+    "id": "771f94ca-5bff-42da-bdbb-810435f2b899",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": ""
+    }
+  },
+  "paths": {
+    "zippedPackage": "solution/nk-webpart.sppkg"
+  }
+}
