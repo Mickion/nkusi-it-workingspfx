@@ -154,22 +154,12 @@ export default class WebApiClient extends React.Component<IWebApiClientProps, IW
 			key: 'views',
 			name: selectedView == 'All' ? 'All' : "I'm in charge of",
 			icon: 'View',
-/*			subMenuProps: {
-				items: [
-					{
-						key: 'viewAll',
-						name: 'All',
-						icon: 'ViewAll',
-						onClick: () => this.selectView('All')
-					}
-				]
-			}*/
 		};
 
 		let commands = [ views ];
 
 		return commands;
-	}
+	} 
 
 	public selectView(view: 'All' | 'My') {
 		this.setState({
@@ -301,169 +291,135 @@ export default class WebApiClient extends React.Component<IWebApiClientProps, IW
 	}
 
 	public render(): React.ReactElement<IWebApiClientProps> {
-		let { timeSheets, selection, selectedDocument, isAdding, isEditing } = this.state;
-					
-		//Get week ending - FIX
-		var todaysDate = new Date(); 
-		//console.log("UNDERSTAND: YR"+ todaysDate.getFullYear() +" MM "+ todaysDate.getMonth() +" DD "+ todaysDate.getDay());
-		var lastday = todaysDate.getDate() - (todaysDate.getDay() - 1) + 6;
-		var lastdayMonth = todaysDate.getMonth() + 1;
-		var lastdayFullDate = lastday +"/"+ lastdayMonth +"/"+ todaysDate.getFullYear();
-
-		//const tabSpace = "&nbsp;&nbsp;&nbsp;&nbsp;";
-		const workedHours = [0,0,0,0,0,0,0];
-		const overtimeHours = [0,0,0,0,0,0,0];
-		const filteredTimeSheets = [];
-
-		for(var i=0; i < timeSheets.length; i++){
-			workedHours[timeSheets[i].DayOfWeek] = workedHours[timeSheets[i].DayOfWeek] + timeSheets[i].Hours;
-
-			if(workedHours[timeSheets[i].DayOfWeek] > 8){				  
-			  overtimeHours[timeSheets[i].DayOfWeek] = workedHours[timeSheets[i].DayOfWeek] - 8;
-			}
-
-			//Move to own function
-			/* var tDate = todaysDate.getFullYear() + todaysDate.getMonth() + (todaysDate.getDay() + 1);
-			var vdt = new Date(timeSheets[i].Date.toString());
-			var vDate = vdt.getFullYear() + vdt.getMonth() + (vdt.getDay() + 1);
-			
-			//console.log("** "+ tDate +" vs date... "+ vDate);
-			if (tDate == vDate){
-				filteredTimeSheets.push(timeSheets[i]);
-				console.log("SHOW ONLY: "+ timeSheets[i]);
-				//console.log("Removed "+ timeSheets[i].Title +" date "+ timeSheets[i].Date);
-				//timeSheets[i] = null;
-			} 		*/	
-		}	
+		let { timeSheets, selection, selectedDocument, isAdding, isEditing } = this.state;				
 		
-		
-		var todaysDate = new Date(); 
+		let todaysDate = new Date(); 
 		const daysOftheWeek = ["SUN","MON","TUE","WED","THU","FRI","SAT"];
-		let todayDisplay = todaysDate.getDate() +" "+ daysOftheWeek[todaysDate.getDay()];
 
         //Style with bootstrap
         SPComponentLoader.loadCss("https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css");
 		return (
-			<div>
-				<Container>
-					<Row><h1>{todayDisplay}</h1></Row>
+			<Container>
+				<Row>
+					<div><h1>{todaysDate.getDate()}</h1></div>
+					<div><h1>{daysOftheWeek[todaysDate.getDay()]}</h1></div>
+				</Row>
+				<Row>Captured hours: </Row>
 
-					<Row>
-						<iframe
-							src={this.apiConfig.appRedirectUri}
-							style={{ display: 'none' }}
-							onLoad={() => (this.authenticated = true)}
-						/>
-					
-						<DetailsList
-							items={timeSheets}
-							columns={[
-								/*{
-									key: 'id',
-									name: 'Id',
-									fieldName: 'Id',
-									minWidth: 15,
-									maxWidth: 30
-								},*/
-								{
-									key: 'Title',
-									name: 'Title',
-									fieldName: 'Title',
-									minWidth: 100,
-									maxWidth: 200
-								},
-								{
-									key: 'Description',
-									name: 'Description',
-									fieldName: 'Description',
-									minWidth: 100,
-									maxWidth: 200
-								},
-								{
-									key: 'Category',
-									name: "Category",
-									fieldName: 'Category',
-									minWidth: 100,
-									maxWidth: 200
-								},
-								{
-									key: 'Hours',
-									name: "Hours",
-									fieldName: 'Hours',
-									minWidth: 100,
-									maxWidth: 200
-								},
-								{
-									key: 'Date',
-									name: "Date",
-									fieldName: 'Date',
-									minWidth: 100,
-									maxWidth: 200
-								}
-							]}
-							selectionMode={SelectionMode.single}
-							selection={selection}
-						/>
-						{selectedDocument &&
-						(isAdding) && (
-							<Panel isOpen={true}>
-								<TextField
-									label="Title"
-									onChange={(v) => this.onValueChange('Title', v)}
-								/>
-								<TextField
-									label="Description"
-									onChange={(v) => this.onValueChange('Description', v)}
-								/>
-								<TextField
-									label="Category"
-									onChange={(v) => this.onValueChange('Category', v)}
-								/>							
-								<TextField
-									label="Hours"
-									onChange={(v) => this.onValueChange('Hours', v)}
-								/>
-							
-								<PrimaryButton text="Apply" onClick={() => this.onApply()} />
-								<DefaultButton text="Cancel" onClick={() => this.onCancel()} />
-							</Panel>
-						)} 
+				<Row>
+					<iframe
+						src={this.apiConfig.appRedirectUri}
+						style={{ display: 'none' }}
+						onLoad={() => (this.authenticated = true)}
+					/>
+				
+					<DetailsList
+						items={timeSheets}
+						columns={[
+							/*{
+								key: 'id',
+								name: 'Id',
+								fieldName: 'Id',
+								minWidth: 15,
+								maxWidth: 30
+							},*/
+							{
+								key: 'Title',
+								name: 'Title',
+								fieldName: 'Title',
+								minWidth: 100,
+								maxWidth: 200
+							},
+							{
+								key: 'Description',
+								name: 'Description',
+								fieldName: 'Description',
+								minWidth: 100,
+								maxWidth: 200
+							},
+							{
+								key: 'Category',
+								name: "Category",
+								fieldName: 'Category',
+								minWidth: 100,
+								maxWidth: 200
+							},
+							{
+								key: 'Hours',
+								name: "Hours",
+								fieldName: 'Hours',
+								minWidth: 100,
+								maxWidth: 200
+							},
+							{
+								key: 'Date',
+								name: "Date",
+								fieldName: 'Date',
+								minWidth: 100,
+								maxWidth: 200
+							}
+						]}
+						selectionMode={SelectionMode.single}
+						selection={selection}
+					/>
+					{selectedDocument &&
+					(isAdding) && (
+						<Panel isOpen={true}>
+							<TextField
+								label="Title"
+								onChange={(v) => this.onValueChange('Title', v)}
+							/>
+							<TextField
+								label="Description"
+								onChange={(v) => this.onValueChange('Description', v)}
+							/>
+							<TextField
+								label="Category"
+								onChange={(v) => this.onValueChange('Category', v)}
+							/>							
+							<TextField
+								label="Hours"
+								onChange={(v) => this.onValueChange('Hours', v)}
+							/>
+						
+							<PrimaryButton text="Apply" onClick={() => this.onApply()} />
+							<DefaultButton text="Cancel" onClick={() => this.onCancel()} />
+						</Panel>
+					)} 
 
-						{selectedDocument &&
-						(isEditing) && (
-							<Panel isOpen={true}>
-								<TextField
-									label="Title"
-									defaultValue={selectedDocument.Title}
-									onChange={(v) => this.onValueChange('Title', v)}								
-								/>
-								<TextField
-									label="Description"
-									defaultValue={selectedDocument.Description}
-									onChange={(v) => this.onValueChange('Description', v)}
-								/>
-								<TextField
-									label="Category"
-									defaultValue={selectedDocument.Category}
-									onChange={(v) => this.onValueChange('Category', v)}
-								/>							
-								<TextField
-									label="Hours"
-									defaultValue={this.convertToString(selectedDocument.Hours)}
-									onChange={(v) => this.onValueChange('Hours', v)}
-								/>
-							
-								<PrimaryButton text="Apply" onClick={() => this.onApply()} />
-								<DefaultButton text="Cancel" onClick={() => this.onCancel()} />
-							</Panel>
-						)} 
-					</Row>
-					
-					<CommandBar items={this._buildCommands()} farItems={this._buildFarCommands()} />
-					
-                    
-				</Container>
-			</div>
+					{selectedDocument &&
+					(isEditing) && (
+						<Panel isOpen={true}>
+							<TextField
+								label="Title"
+								defaultValue={selectedDocument.Title}
+								onChange={(v) => this.onValueChange('Title', v)}								
+							/>
+							<TextField
+								label="Description"
+								defaultValue={selectedDocument.Description}
+								onChange={(v) => this.onValueChange('Description', v)}
+							/>
+							<TextField
+								label="Category"
+								defaultValue={selectedDocument.Category}
+								onChange={(v) => this.onValueChange('Category', v)}
+							/>							
+							<TextField
+								label="Hours"
+								defaultValue={this.convertToString(selectedDocument.Hours)}
+								onChange={(v) => this.onValueChange('Hours', v)}
+							/>
+						
+							<PrimaryButton text="Apply" onClick={() => this.onApply()} />
+							<DefaultButton text="Cancel" onClick={() => this.onCancel()} />
+						</Panel>
+					)} 
+				</Row>
+								
+				<CommandBar items={this._buildCommands()}/>
+				
+			</Container>
 		);
 	}
 }
