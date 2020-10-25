@@ -18,11 +18,9 @@ import {
 import { ITimeSheet } from '../../../entities/ITimeSheet';
 import { TimeSheetsServiceKey, ITimeSheetsService } from '../../../services/TimeSheetsService';
 import { ApiConfigServiceKey, IApiConfigService } from '../../../services/ApiConfigService';
-import styles from '../NkWebpartWebPart.module.scss';
 
 import { SPComponentLoader } from '@microsoft/sp-loader';
 import { Container,Row,Col,Button,ButtonToolbar }from "react-bootstrap";
-
 
 export interface IWebApiClientState {
 	timeSheets?: ITimeSheet[];
@@ -354,7 +352,7 @@ export default class WebApiClient extends React.Component<IWebApiClientProps, IW
 			<div>
 				<Container>
                     <Button variant="success">Success</Button>
-                    
+
 					<h3>&nbsp;Week Ending:{lastdayFullDate}</h3>
 					<div>
 						&nbsp;&nbsp;&nbsp;&nbsp;MON

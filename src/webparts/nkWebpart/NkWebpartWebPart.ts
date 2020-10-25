@@ -5,7 +5,7 @@ import { Version } from '@microsoft/sp-core-library';
 import { BaseClientSideWebPart} from '@microsoft/sp-webpart-base';
 import {IPropertyPaneConfiguration, PropertyPaneTextField } from '@microsoft/sp-property-pane';
 
-import * as strings from 'NkuWebPartStrings';
+import * as strings from 'NkuWerbpartWebPartStrings';
 import WebApiClient from './components/WebApiClient';
 import { IWebApiClientProps } from './components/IWebApiClientProps';
 
