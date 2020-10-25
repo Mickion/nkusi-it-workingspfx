@@ -2,21 +2,21 @@ import { ServiceKey, ServiceScope } from '@microsoft/sp-core-library';
 
 export interface IApiConfigService {
 	apiUrl: string;
-	apiMyListUrl: string;
+	apiMyTimeSheetsUrl: string;
 	appRedirectUri: string;
 	configure(currentWebUrl: string, remoteHostUrl: string, appInstanceId: string);
 }
 
 export class ApiConfigService implements IApiConfigService {
 	public apiUrl: string;
-	public apiMyListUrl: string;
+	public apiMyTimeSheetsUrl: string;
 	public appRedirectUri: string;  
 
 	constructor(private serviceScope: ServiceScope) {}
 
 	public configure(currentWebUrl: string, apiHostUrl: string, appInstanceId: string) {
 		this.apiUrl = apiHostUrl + '/api/TimeSheets';
-		this.apiMyListUrl = apiHostUrl + '/api/TimeSheets';
+		this.apiMyTimeSheetsUrl = apiHostUrl + '/api/MyTimeSheets';
 		this.appRedirectUri = `${currentWebUrl}/_layouts/15/appredirect.aspx?instance_id=${appInstanceId}`;
 	}
 }

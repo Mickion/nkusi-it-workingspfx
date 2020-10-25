@@ -6,11 +6,11 @@ import { ServiceScope, ServiceKey } from '@microsoft/sp-core-library';
 export interface ITimeSheetsService {
     getAllTimeSheets(): Promise<ITimeSheet[]>;
     
-    // The other commented out query of GET
-    //getMyTimeSheets(): Promise<ITimeSheet[]>;
-    
+    // Return only entries captured today
+    getMyTimeSheets(): Promise<ITimeSheet[]>;
+
+    //Return all entries on the list
     getTimeSheets(id: number): Promise<ITimeSheet>;
-    // FIX the below after retrieval..
     
     createTimeSheet(timeSheet: ITimeSheet): Promise<any>;
     updateTimeSheet(id: number, update: ITimeSheet): Promise<any>;
@@ -36,13 +36,13 @@ export class TimeSheetsService implements ITimeSheetsService {
             }).then((resp) => resp.json());
     }
 
-    // getMyTimeSheets(): Promise<ITimeSheet[]>;
-    /*public getMytimeSheets(): Promise<ItimeSheet[]> {
-        return this.httpClient.get(this.apiConfig.apiMyDocumentsUrl, HttpClient.configurations.v1, {
-        mode: 'cors',
-        credentials: 'include'
-    }).then((resp) => resp.json());
-    }*/
+    public getMyTimeSheets(): Promise<ITimeSheet[]> {
+        return this.httpClient.get(this.apiConfig.apiMyTimeSheetsUrl, HttpClient.configurations.v1, 
+            {
+                mode: 'cors',
+                credentials: 'include'
+            }).then((resp) => resp.json());
+    }
 
     public getTimeSheets(id: number): Promise<ITimeSheet> {
         return this.httpClient.get(`${this.apiConfig.apiUrl}/${id}`, HttpClient.configurations.v1,

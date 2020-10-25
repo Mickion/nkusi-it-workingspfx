@@ -20,7 +20,9 @@ import { TimeSheetsServiceKey, ITimeSheetsService } from '../../../services/Time
 import { ApiConfigServiceKey, IApiConfigService } from '../../../services/ApiConfigService';
 
 import { SPComponentLoader } from '@microsoft/sp-loader';
-import { Container,Row,Col,Button,ButtonToolbar }from "react-bootstrap";
+import { Container,Row,Modal,Button,Toast }from "react-bootstrap";
+
+import CustomDialog from '../../../extensions/CustomDialog';  
 
 export interface IWebApiClientState {
 	timeSheets?: ITimeSheet[];
@@ -68,14 +70,21 @@ export default class WebApiClient extends React.Component<IWebApiClientProps, IW
 		this._executeOrDelayUntilAuthenticated(() => {
 			switch (effectiveView) {
 				case 'All':
-					// Load all timesheet items when component is being mounted
-					this.timeSheetsService.getAllTimeSheets().then((docs) => {
-						console.log("DOCS HERE.." + docs);
+					//Load only time entries created today..
+					this.timeSheetsService.getMyTimeSheets().then((docs) => {
 						let state = stateRefresh || {};	
 						state.timeSheets = docs;
 						this.setState(state);
 					});
+
+					//The below commented out code is for getting all List entries
+					/*this.timeSheetsService.getAllTimeSheets().then((docs) => {
+						let state = stateRefresh || {};	
+						state.timeSheets = docs;
+						this.setState(state);
+					});*/
 					break;
+
 				/*case 'My': - the other
 					// Load My business documents when component is being mounted
 					this.businessDocsService.getMyBusinessDocuments().then((docs) => {
@@ -185,7 +194,6 @@ export default class WebApiClient extends React.Component<IWebApiClientProps, IW
 		});
 	} 
 
-	
 	public editCurrentTimeSheet() {
 		let { selectedDocument } = this.state;
 		if (!selectedDocument) {
@@ -196,7 +204,6 @@ export default class WebApiClient extends React.Component<IWebApiClientProps, IW
 			isEditing: true
 		});
 	}
-
 	
 	public removeCurrentTimeSheet() {
 		let { selectedDocument } = this.state;
@@ -242,7 +249,7 @@ export default class WebApiClient extends React.Component<IWebApiClientProps, IW
 			this._executeOrDelayUntilAuthenticated(() => {
 				this.timeSheetsService
 					.createTimeSheet(selectedDocument)
-					.then(() => {
+					.then(() => {						
 						alert('Timesheet entry has been captured successfully!');
 						this._loadTimesheets({
 							selectedDocument: null,
@@ -290,22 +297,40 @@ export default class WebApiClient extends React.Component<IWebApiClientProps, IW
 		return String(val);
 	}
 
+	componentDidMount(){
+		//Show Welcome message
+		const dialog: CustomDialog = new CustomDialog();  
+		dialog.show();
+	}
+
 	public render(): React.ReactElement<IWebApiClientProps> {
 		let { timeSheets, selection, selectedDocument, isAdding, isEditing } = this.state;				
-		
-		let todaysDate = new Date(); 
-		const daysOftheWeek = ["SUN","MON","TUE","WED","THU","FRI","SAT"];
 
-        //Style with bootstrap
+		let todaysDate = new Date(); 
+		const daysOftheWeek = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+
+		let totalHours = 0;
+		let overtimeHrs = 0;
+		for(var i=0; i<timeSheets.length; i++){
+			totalHours = totalHours + timeSheets[i].Hours;
+			
+			if(totalHours > 8)
+			{
+				overtimeHrs = totalHours -8;				
+			}
+		}
+		
+		        //Style with bootstrap
         SPComponentLoader.loadCss("https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css");
 		return (
 			<Container>
 				<Row>
-					<div><h1>{todaysDate.getDate()}</h1></div>
-					<div><h1>{daysOftheWeek[todaysDate.getDay()]}</h1></div>
+					<div><h4>{todaysDate.getDate()}</h4></div>
+					<div><h4>{daysOftheWeek[todaysDate.getDay()]}</h4></div>
 				</Row>
-				<Row>Captured hours: </Row>
-
+				<Row>Total Hours Captured: {totalHours}</Row>
+				<Row>Overtime Hours Pending Approval: {overtimeHrs}</Row>
+				
 				<Row>
 					<iframe
 						src={this.apiConfig.appRedirectUri}
@@ -422,4 +447,5 @@ export default class WebApiClient extends React.Component<IWebApiClientProps, IW
 			</Container>
 		);
 	}
+	
 }
