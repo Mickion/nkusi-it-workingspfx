@@ -154,22 +154,16 @@ export default class WebApiClient extends React.Component<IWebApiClientProps, IW
 			key: 'views',
 			name: selectedView == 'All' ? 'All' : "I'm in charge of",
 			icon: 'View',
-			subMenuProps: {
+/*			subMenuProps: {
 				items: [
 					{
 						key: 'viewAll',
 						name: 'All',
 						icon: 'ViewAll',
 						onClick: () => this.selectView('All')
-					},
-					{
-						key: 'inChargeOf',
-						name: "I'm in charge of",
-						icon: 'AccountManagement',
-						onClick: () => this.selectView('My')
 					}
 				]
-			}
+			}*/
 		};
 
 		let commands = [ views ];
@@ -342,7 +336,8 @@ export default class WebApiClient extends React.Component<IWebApiClientProps, IW
 			} 		*/	
 		}	
 		
-		//FIX
+		
+		var todaysDate = new Date(); 
 		const daysOftheWeek = ["SUN","MON","TUE","WED","THU","FRI","SAT"];
 		let todayDisplay = todaysDate.getDate() +" "+ daysOftheWeek[todaysDate.getDay()];
 
@@ -351,136 +346,122 @@ export default class WebApiClient extends React.Component<IWebApiClientProps, IW
 		return (
 			<div>
 				<Container>
-                    <Button variant="success">Success</Button>
+					<Row><h1>{todayDisplay}</h1></Row>
 
-					<h3>&nbsp;Week Ending:{lastdayFullDate}</h3>
-					<div>
-						&nbsp;&nbsp;&nbsp;&nbsp;MON
-						&nbsp;&nbsp;&nbsp;&nbsp;TUE
-						&nbsp;&nbsp;&nbsp;&nbsp;WED
-						&nbsp;&nbsp;&nbsp;&nbsp;THU
-						&nbsp;&nbsp;&nbsp;&nbsp;FRI
-						&nbsp;&nbsp;&nbsp;&nbsp;SAT
-						&nbsp;&nbsp;&nbsp;&nbsp;SUN
-					</div>
-					<div>
-						<h5>Hours Worked:{workedHours}</h5>
-					</div>
-					<div>
-						<h5>Overtime Hours:{overtimeHours}</h5>
-					</div>
-				
-					<div>ADD divider here via css color/border</div>
-					<div><h1>{todayDisplay}</h1></div>
-					<iframe
-						src={this.apiConfig.appRedirectUri}
-						style={{ display: 'none' }}
-						onLoad={() => (this.authenticated = true)}
-					/>
-				
-					<DetailsList
-						items={timeSheets}
-						columns={[
-							/*{
-								key: 'id',
-								name: 'Id',
-								fieldName: 'Id',
-								minWidth: 15,
-								maxWidth: 30
-							},*/
-							{
-								key: 'Title',
-								name: 'Title',
-								fieldName: 'Title',
-								minWidth: 100,
-								maxWidth: 200
-							},
-							{
-								key: 'Description',
-								name: 'Description',
-								fieldName: 'Description',
-								minWidth: 100,
-								maxWidth: 200
-							},
-							{
-								key: 'Category',
-								name: "Category",
-								fieldName: 'Category',
-								minWidth: 100,
-								maxWidth: 200
-							},
-							{
-								key: 'Hours',
-								name: "Hours",
-								fieldName: 'Hours',
-								minWidth: 100,
-								maxWidth: 200
-							},
-							{
-								key: 'Date',
-								name: "Date",
-								fieldName: 'Date',
-								minWidth: 100,
-								maxWidth: 200
-							}
-						]}
-						selectionMode={SelectionMode.single}
-						selection={selection}
-					/>
-					{selectedDocument &&
-					(isAdding) && (
-						<Panel isOpen={true}>
-							<TextField
-								label="Title"
-								onChange={(v) => this.onValueChange('Title', v)}
-							/>
-							<TextField
-								label="Description"
-								onChange={(v) => this.onValueChange('Description', v)}
-							/>
-							<TextField
-								label="Category"
-								onChange={(v) => this.onValueChange('Category', v)}
-							/>							
-							<TextField
-								label="Hours"
-								onChange={(v) => this.onValueChange('Hours', v)}
-							/>
-						
-							<PrimaryButton text="Apply" onClick={() => this.onApply()} />
-							<DefaultButton text="Cancel" onClick={() => this.onCancel()} />
-						</Panel>
-					)} 
+					<Row>
+						<iframe
+							src={this.apiConfig.appRedirectUri}
+							style={{ display: 'none' }}
+							onLoad={() => (this.authenticated = true)}
+						/>
+					
+						<DetailsList
+							items={timeSheets}
+							columns={[
+								/*{
+									key: 'id',
+									name: 'Id',
+									fieldName: 'Id',
+									minWidth: 15,
+									maxWidth: 30
+								},*/
+								{
+									key: 'Title',
+									name: 'Title',
+									fieldName: 'Title',
+									minWidth: 100,
+									maxWidth: 200
+								},
+								{
+									key: 'Description',
+									name: 'Description',
+									fieldName: 'Description',
+									minWidth: 100,
+									maxWidth: 200
+								},
+								{
+									key: 'Category',
+									name: "Category",
+									fieldName: 'Category',
+									minWidth: 100,
+									maxWidth: 200
+								},
+								{
+									key: 'Hours',
+									name: "Hours",
+									fieldName: 'Hours',
+									minWidth: 100,
+									maxWidth: 200
+								},
+								{
+									key: 'Date',
+									name: "Date",
+									fieldName: 'Date',
+									minWidth: 100,
+									maxWidth: 200
+								}
+							]}
+							selectionMode={SelectionMode.single}
+							selection={selection}
+						/>
+						{selectedDocument &&
+						(isAdding) && (
+							<Panel isOpen={true}>
+								<TextField
+									label="Title"
+									onChange={(v) => this.onValueChange('Title', v)}
+								/>
+								<TextField
+									label="Description"
+									onChange={(v) => this.onValueChange('Description', v)}
+								/>
+								<TextField
+									label="Category"
+									onChange={(v) => this.onValueChange('Category', v)}
+								/>							
+								<TextField
+									label="Hours"
+									onChange={(v) => this.onValueChange('Hours', v)}
+								/>
+							
+								<PrimaryButton text="Apply" onClick={() => this.onApply()} />
+								<DefaultButton text="Cancel" onClick={() => this.onCancel()} />
+							</Panel>
+						)} 
 
-					{selectedDocument &&
-					(isEditing) && (
-						<Panel isOpen={true}>
-							<TextField
-								label="Title"
-								defaultValue={selectedDocument.Title}
-								onChange={(v) => this.onValueChange('Title', v)}								
-							/>
-							<TextField
-								label="Description"
-								defaultValue={selectedDocument.Description}
-								onChange={(v) => this.onValueChange('Description', v)}
-							/>
-							<TextField
-								label="Category"
-								defaultValue={selectedDocument.Category}
-								onChange={(v) => this.onValueChange('Category', v)}
-							/>							
-							<TextField
-								label="Hours"
-								defaultValue={this.convertToString(selectedDocument.Hours)}
-								onChange={(v) => this.onValueChange('Hours', v)}
-							/>
-						
-							<PrimaryButton text="Apply" onClick={() => this.onApply()} />
-							<DefaultButton text="Cancel" onClick={() => this.onCancel()} />
-						</Panel>
-					)} 
-                    <CommandBar items={this._buildCommands()} farItems={this._buildFarCommands()} />
+						{selectedDocument &&
+						(isEditing) && (
+							<Panel isOpen={true}>
+								<TextField
+									label="Title"
+									defaultValue={selectedDocument.Title}
+									onChange={(v) => this.onValueChange('Title', v)}								
+								/>
+								<TextField
+									label="Description"
+									defaultValue={selectedDocument.Description}
+									onChange={(v) => this.onValueChange('Description', v)}
+								/>
+								<TextField
+									label="Category"
+									defaultValue={selectedDocument.Category}
+									onChange={(v) => this.onValueChange('Category', v)}
+								/>							
+								<TextField
+									label="Hours"
+									defaultValue={this.convertToString(selectedDocument.Hours)}
+									onChange={(v) => this.onValueChange('Hours', v)}
+								/>
+							
+								<PrimaryButton text="Apply" onClick={() => this.onApply()} />
+								<DefaultButton text="Cancel" onClick={() => this.onCancel()} />
+							</Panel>
+						)} 
+					</Row>
+					
+					<CommandBar items={this._buildCommands()} farItems={this._buildFarCommands()} />
+					
+                    
 				</Container>
 			</div>
 		);
