@@ -1,13 +1,18 @@
 {
-  "entries": [
-    {
-      "entry": "./lib/webparts/nkWebpart/NkWebpartWebPart.js",
-      "manifest": "./src/webparts/nkWebpart/NkWebpartWebPart.manifest.json",
-      "outputPath": "./dist/web-api-client-web-part.js"
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "web-api-client-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/nkWebpart/NkWebpartWebPart.js",
+          "manifest": "./src/webparts/nkWebpart/NkWebpartWebPart.manifest.json"
+        }
+      ]
     }
-  ],
-  "externals": {},
+  },
   "localizedResources": {
-    "NkuWebpartWebPartStrings": "/webparts/nkWebpart/loc/{locale}.js"
-  }
+    "NkuWebpartWebPartStrings": "lib/webparts/nkWebpart/loc/{locale}.js"
+  },
+  "externals": {}
 }

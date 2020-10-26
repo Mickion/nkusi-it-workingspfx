@@ -7,7 +7,6 @@ export default class CustomDialog extends BaseDialog {
     //public username: string;
 
     public render(): void { 
-        //this.GetUser();
 
         SPComponentLoader.loadCss("https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css");
         let loggedUser = "Mickion Mtshali";
@@ -45,7 +44,7 @@ export default class CustomDialog extends BaseDialog {
         super.onAfterClose();       
     } 
 
-    private GetUser(){
+    /*private GetUser(){
         pnp.sp.profiles.myProperties.select("AccountName", "PreferredName").get().then(d => {
             alert(JSON.stringify(d));        
         });
@@ -57,8 +56,8 @@ export default class CustomDialog extends BaseDialog {
                 userPropertyValues += property.Key + " - " + property.Value + "<br/>";  
             });
             alert(userPropertyValues);
-        })*/
-    }
+        })
+    } */
 
     
     /*private GetUserProperties(): void {  

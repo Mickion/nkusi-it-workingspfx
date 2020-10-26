@@ -290,7 +290,6 @@ export default class WebApiClient extends React.Component<IWebApiClientProps, IW
 	}
 
 	private onCancel() {
-		//console.log("onCancel function...");
 		this.setState({
 			selectedDocument: null,
 			isAdding: false,
@@ -327,7 +326,7 @@ export default class WebApiClient extends React.Component<IWebApiClientProps, IW
 	}  */
 
 	//This function is not working - implemented a not so good solution due to time.
-	private getUserId(){
+	/*private getUserId(){
 		// Here, 'this' refers to my SPFx webpart which inherits from the BaseClientSideWebPart class.
 		// Since I am calling this method from inside the class, I have access to 'this'.
 		const spHttpClient: SPHttpClient = this.context.spHttpClient;
@@ -353,7 +352,7 @@ export default class WebApiClient extends React.Component<IWebApiClientProps, IW
         		alert("PROP: "+ userProfileProps);
     		});
 		});
-	}
+	}*/
 	
 	public componentDidMount(){
 		//this.getUserId();
