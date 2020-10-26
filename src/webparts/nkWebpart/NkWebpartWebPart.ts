@@ -18,7 +18,7 @@ export default class NkuWebpartWebPart extends BaseClientSideWebPart<INkuWebpart
 	public onInit(): Promise<any> {
 		return (
 			super
-				.onInit()
+				.onInit()	
 				// When configuration is done, we get the properly configured instances of the services we want to use
 				.then(() => {
 					this.context.serviceScope.whenFinished(() => {
