@@ -24,6 +24,13 @@ import { Container,Row,Modal,Button,Toast }from "react-bootstrap";
 
 import CustomDialog from '../../../extensions/CustomDialog';  
 
+import * as pnp from 'sp-pnp-js';
+import { sp } from "@pnp/sp";
+
+import { SPHttpClient, SPHttpClientConfiguration, SPHttpClientResponse, ODataVersion, ISPHttpClientConfiguration } from '@microsoft/sp-http';
+import { IODataUser, IODataWeb } from '@microsoft/sp-odata-types';
+
+
 export interface IWebApiClientState {
 	timeSheets?: ITimeSheet[];
 	selectedDocument?: ITimeSheet;
@@ -187,9 +194,7 @@ export default class WebApiClient extends React.Component<IWebApiClientProps, IW
 				Description: 'Override',
 				Category: 'Override',
 				Hours: 1,
-				Date: new Date(),
 				Created: new Date(),
-				DayOfWeek: 1,
 			} 
 		});
 	} 
@@ -297,8 +302,62 @@ export default class WebApiClient extends React.Component<IWebApiClientProps, IW
 		return String(val);
 	}
 
-	componentDidMount(){
-		//Show Welcome message
+	/*Get Current Logged In User*/  
+    /*public async spLoggedInUserDetails(ctx: any): Promise<any>{  
+        try {  
+            const web = new pnp.Web(ctx.pageContext.site.absoluteUrl);  
+            return await web.currentUser.get();          
+        } catch (error) {  
+            alert("Error in spLoggedInUserDetails : " + error);  
+        }      
+    }
+
+    private async loadUserDetails() {//:Promise<string>{  
+        try{  
+          let userDetails = await this.spLoggedInUserDetails(this.props.ctx); 
+          return userDetails.Title; 
+           this.setState({    
+            Name: userDetails.Title,    
+            UserId: userDetails.Id,    
+            EmailId: userDetails.Email,            
+          });  
+        }catch(error){  
+          console.log("Error in loadUserDetails : ", error);  
+        }  
+	}  */
+
+	//This function is not working - implemented a not so good solution due to time.
+	private getUserId(){
+		// Here, 'this' refers to my SPFx webpart which inherits from the BaseClientSideWebPart class.
+		// Since I am calling this method from inside the class, I have access to 'this'.
+		const spHttpClient: SPHttpClient = this.context.spHttpClient;
+		const currentWebUrl: string = "https://amanziakwena.sharepoint.com/sites/devsite"; //this.context.pageContext.web.absoluteUrl;
+
+		//GET current web info
+		spHttpClient.get(`${currentWebUrl}/_api/web`, SPHttpClient.configurations.v1).then((response: SPHttpClientResponse) => {
+			response.json().then((web: IODataWeb) => {
+        		alert("WEB: "+ web.Url);
+    		});
+		});
+
+		//GET current user information from the User Information List
+		spHttpClient.get(`${currentWebUrl}/_api/web/currentuser`, SPHttpClient.configurations.v1).then((response: SPHttpClientResponse) => {
+    		response.json().then((user: IODataUser) => {
+        		alert("USER: "+ user.LoginName);
+    		});
+		});
+
+		//GET current user information from the User Profile Service
+		spHttpClient.get(`${currentWebUrl}/_api/SP.UserProfiles.PeopleManager/GetMyProperties`, SPHttpClient.configurations.v1).then((response: SPHttpClientResponse) => {
+    		response.json().then((userProfileProps: any) => {
+        		alert("PROP: "+ userProfileProps);
+    		});
+		});
+	}
+	
+	public componentDidMount(){
+		//this.getUserId();
+
 		const dialog: CustomDialog = new CustomDialog();  
 		dialog.show();
 	}
@@ -377,9 +436,9 @@ export default class WebApiClient extends React.Component<IWebApiClientProps, IW
 								maxWidth: 200
 							},
 							{
-								key: 'Date',
-								name: "Date",
-								fieldName: 'Date',
+								key: 'Created',
+								name: "Created",
+								fieldName: 'Created',
 								minWidth: 100,
 								maxWidth: 200
 							}

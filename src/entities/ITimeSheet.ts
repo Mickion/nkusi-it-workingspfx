@@ -4,7 +4,5 @@ export interface ITimeSheet  {
     Description: string;
     Category: string;
     Hours: number;
-    Date: Date;
     Created: Date;
-    DayOfWeek: number;
   }
